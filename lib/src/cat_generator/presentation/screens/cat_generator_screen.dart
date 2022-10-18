@@ -16,6 +16,14 @@ class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
   final CatImagesCubit _cubit = getIt<CatImagesCubit>();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _cubit.meow();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -50,7 +58,8 @@ class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
                           } else if (state is CatImagesLoading) {
                             return SizedBox(
                               height: size.width * .7,
-                              child: const Center(child: CircularProgressIndicator()),
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
                             );
                           } else if (state is CatImagesError) {
                             return SizedBox(
