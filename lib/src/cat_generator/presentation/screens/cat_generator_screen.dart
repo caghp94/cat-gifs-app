@@ -6,21 +6,26 @@ import 'package:flutter_svg/svg.dart';
 import 'package:injectable/injectable.dart';
 
 class CatGeneratorScreen extends StatefulWidget {
-  const CatGeneratorScreen({Key? key}) : super(key: key);
+  CatImagesCubit? testCubit;
+  CatGeneratorScreen({Key? key, @visibleForTesting this.testCubit})
+      : super(key: key);
 
   @override
   State<CatGeneratorScreen> createState() => _CatGeneratorScreenState();
 }
 
 class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
-  final CatImagesCubit _cubit = getIt<CatImagesCubit>();
+  late CatImagesCubit _cubit;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _cubit.meow();
-    });
+    if (widget.testCubit == null) {
+      _cubit = getIt<CatImagesCubit>();
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        _cubit.meow();
+      });
+    }
   }
 
   @override
@@ -48,22 +53,24 @@ class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: BlocBuilder<CatImagesCubit, CatImagesState>(
-                        bloc: _cubit,
+                        bloc: widget.testCubit ?? _cubit,
                         builder: (context, state) {
                           if (state is CatImageLoaded) {
                             return Image.memory(
                               state.imageBytes,
-                              height: size.width * .7,
+                              height: size.height * .3,
                             );
                           } else if (state is CatImagesLoading) {
                             return SizedBox(
-                              height: size.width * .7,
+                              height: size.height * .3,
                               child: const Center(
-                                  child: CircularProgressIndicator()),
+                                  child: CircularProgressIndicator(
+                                key: Key('cat-images-loading'),
+                              )),
                             );
                           } else if (state is CatImagesError) {
                             return SizedBox(
-                              height: size.width * .7,
+                              height: size.height * .3,
                               child: Center(
                                 child: Text(
                                   state.errorMessage,
@@ -78,7 +85,7 @@ class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: _cubit.meow,
+                      onPressed: (widget.testCubit ?? _cubit).meow,
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

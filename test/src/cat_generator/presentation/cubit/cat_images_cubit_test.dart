@@ -10,19 +10,19 @@ import 'package:mocktail/mocktail.dart';
 
 class MockCatsRepository extends Mock implements CatsRepository {}
 
-class MockGeneralFailure extends Fake implements GeneralFailure {
+class FakeGeneralFailure extends Fake implements GeneralFailure {
   @override
   String get errorMessage => 'Expected proper error message';
 }
 
 void main() {
   late MockCatsRepository mockRepository;
-  late MockGeneralFailure mockGeneralFailure;
+  late FakeGeneralFailure fakeGeneralFailure;
   late Uint8List mockImageBytes;
 
-  setUpAll(() {
+  setUp(() {
     mockRepository = MockCatsRepository();
-    mockGeneralFailure = MockGeneralFailure();
+    fakeGeneralFailure = FakeGeneralFailure();
     mockImageBytes = Uint8List.fromList([1, 2]);
   });
 
@@ -31,27 +31,28 @@ void main() {
       'When repository fails to retrieve an image, cubit should emit an error state with a proper message',
       setUp: () {
         when(() => mockRepository.getRandomCatImage()).thenAnswer(
-          (_) async => Left(mockGeneralFailure),
+          (_) async => Left(fakeGeneralFailure),
         );
       },
       build: () => CatImagesCubit(repository: mockRepository),
       act: (bloc) => bloc.meow(),
       expect: () => [
         CatImagesLoading(),
-        CatImagesError(errorMessage: mockGeneralFailure.errorMessage)
+        CatImagesError(errorMessage: fakeGeneralFailure.errorMessage)
       ],
     );
 
     blocTest<CatImagesCubit, CatImagesState>(
-        'When repository returns an image, cubit should emit loaded state with the image',
-        setUp: () {
-          when(() => mockRepository.getRandomCatImage()).thenAnswer(
-            (_) async => Right(mockImageBytes),
-          );
-        },
-        build: () => CatImagesCubit(repository: mockRepository),
-        act: (bloc) => bloc.meow(),
-        expect: () =>
-            [CatImagesLoading(), CatImageLoaded(imageBytes: mockImageBytes)]);
+      'When repository returns an image, cubit should emit loaded state with the image',
+      setUp: () {
+        when(() => mockRepository.getRandomCatImage()).thenAnswer(
+          (_) async => Right(mockImageBytes),
+        );
+      },
+      build: () => CatImagesCubit(repository: mockRepository),
+      act: (bloc) => bloc.meow(),
+      expect: () =>
+          [CatImagesLoading(), CatImageLoaded(imageBytes: mockImageBytes)],
+    );
   });
 }
