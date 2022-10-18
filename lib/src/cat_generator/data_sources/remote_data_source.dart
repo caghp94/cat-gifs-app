@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:cats_gif_app/core/failures/general_failure.dart';
-import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class RemoteDataSource {
@@ -11,9 +10,15 @@ abstract class RemoteDataSource {
 @Injectable(as: RemoteDataSource)
 class RemoteDataSourceImpl implements RemoteDataSource{
   @override
-  Future<Uint8List> getRandomCatImage() {
-    // TODO: implement getRandomCatImage
-    throw UnimplementedError();
+  Future<Uint8List> getRandomCatImage() async {
+    const catsApi = 'https://cataas.com/cat/gif';
+    
+    final imageBytes = (await NetworkAssetBundle(Uri.parse(catsApi))
+      .load(catsApi))
+      .buffer
+      .asUint8List();
+    
+    return imageBytes;
   }
 
 }
