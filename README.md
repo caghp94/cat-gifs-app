@@ -1,16 +1,33 @@
-# cats_gif_app
+# Cat GIFs
 
-A new Flutter project.
+Challenge for Azumo's Mobile Engineer position.
+
+![image info](./app_preview.gif)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+This app has been built with Flutter SDK 3.0.5. Thats the recommended version in order to build and run the app.
 
-A few resources to get you started if this is your first Flutter project:
+Some over engineering has been used to show additional skills.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Requirements
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Req | Status | Comments |
+| --- | ------ | -------- |
+| README with instructions | ✅ | |
+| Package organization | ✅ | Applied a very high level of a CLEAN architecture |
+| Scalability | ✅  | Every layer of the app is scalable without any stress |
+| Dependency Injection | ✅ | Implemented with the injectable package |
+| Version control | ✅ | Precise commits descriptions on every step of the development |
+| Unit / UI tests | ✅ | Done! |
+| Apply some arch. pattern | ✅ | Repository pattern is applied in this project |
+
+## Useful commands
+
+### To run the app in an emulator / physical device
+
+`flutter run`
+
+### To run all tests
+
+`flutter test`
