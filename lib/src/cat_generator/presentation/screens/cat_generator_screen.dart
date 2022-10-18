@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CatGeneratorScreen extends StatefulWidget {
@@ -19,15 +17,19 @@ class _CatGeneratorScreenState extends State<CatGeneratorScreen> {
       appBar: AppBar(
         title: const Text('Cats Generator'),
       ),
+      backgroundColor: Colors.lightBlue.shade100,
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network('https://cataas.com/cat/gif'),
+            const Text('Meow for more cat GIFs!'),
+            Image.network(
+              'https://cataas.com/cat/gif',
+              height: _size.width * .8,
+            ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  
-                });
+                setState(() {});
               },
               child: Row(
                 mainAxisSize: MainAxisSize.min,

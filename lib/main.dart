@@ -1,7 +1,9 @@
+import 'package:cats_gif_app/dependency_injector.dart';
 import 'package:cats_gif_app/src/cat_generator/presentation/screens/cat_generator_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  configureDependencies();
   runApp(const MyApp());
 }
 
